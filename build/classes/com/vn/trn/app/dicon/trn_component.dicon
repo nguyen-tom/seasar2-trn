@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+	"http://www.seasar.org/dtd/components24.dtd">
+<components>
+      <include path="aop.dicon" />
+      <include path="dao.dicon"/>
+      <include path="j2ee.dicon"/>
+      
+      <component name="traceInterceptor"
+          class="org.seasar.framework.aop.interceptors.TraceInterceptor" />
+          
+      <component class="org.seasar.framework.container.autoregister.FileSystemComponentAutoRegister"> 
+        <property name="autoNaming"> 
+           <component class="org.seasar.framework.container.autoregister.DefaultAutoNaming"/> 
+           </property> 
+           <initMethod name="addClassPattern"> 
+              <arg>"com.vn.trn.app.logic.impl"</arg> 
+              <arg>".*LogicImpl"</arg> 
+           </initMethod> 
+      </component> 
+      
+      
+   <!-- Dang ky Dao-->
+   <component
+         class="org.seasar.framework.container.autoregister.FileSystemComponentAutoRegister">
+         <property name="autoNaming">
+           <component class="org.seasar.framework.container.autoregister.DefaultAutoNaming"/>
+         </property>
+         <initMethod name="addClassPattern">
+           <arg>"com.vn.trn.app.dao"</arg>
+           <arg>".*Dao"</arg>
+         </initMethod>
+     </component>
+      
+      <component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+         <property name="interceptor">j2ee.requiredTx</property>
+                         <initMethod name="addClassPattern">
+                         <arg>"com.vn.trn.app.dao"</arg>
+                         <arg>".*Dao"</arg>
+                 </initMethod>
+         </component>
+     <component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+         <property name="interceptor">dao.interceptor</property>
+                         <initMethod name="addClassPattern">
+                         <arg>"com.vn.trn.app.dao"</arg>
+                         <arg>".*Dao"</arg>
+                 </initMethod>
+         </component>
+ 
+     
+</components> 

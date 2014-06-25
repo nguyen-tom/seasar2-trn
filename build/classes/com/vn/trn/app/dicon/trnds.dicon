@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+	"http://www.seasar.org/dtd/components24.dtd">>
+<components namespace="trnds">
+	<include path="jta.dicon"/>
+	
+	<component name="xaDataSource"
+		class="org.seasar.extension.dbcp.impl.XADataSourceImpl">
+		<property name="driverClassName">"org.postgresql.Driver"</property>
+		<property name="URL">"jdbc:postgresql://localhost:5433/trn-core"</property>
+		<property name="user">"jupiter"</property>
+		<property name="password">"jupiter"</property>
+		
+	</component>
+	<component name="connectionPool"
+		class="org.seasar.extension.dbcp.impl.ConnectionPoolImpl">
+		<property name="timeout">600</property>
+		<property name="maxPoolSize">50</property>
+		<property name="allowLocalTx">true</property>
+		<property name="validationQuery">"SELECT 1"</property>
+		<property name="validationInterval">1000</property>
+
+		<destroyMethod name="close"/>
+	</component>
+	<component name="dataSource" class="org.seasar.extension.dbcp.impl.DataSourceImpl"/>
+	<!-- ResultSet (for S2Pager OracleLimitOffset) -->
+	<component
+		name="resultSetFactory"
+		class="org.seasar.dao.pager.PagerResultSetFactoryOracleLimitOffsetWrapper">
+		<arg>
+			<component class="org.seasar.extension.jdbc.impl.OracleResultSetFactory"/>
+		</arg>
+	</component>
+	<!-- StatementFactory (for S2Pager  OracleLimitOffset) -->
+ 	<component class="org.seasar.extension.jdbc.impl.ConfigurableStatementFactory">
+		<arg>
+			<component class="org.seasar.extension.jdbc.impl.BooleanToIntStatementFactory" />
+		</arg>
+		<property name="fetchSize">100</property>
+	</component>
+</components>
